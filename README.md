@@ -24,21 +24,26 @@ NewsReel v2 reimagines the news as a vertical short-form feed. You type keywords
 newsreel-v2/
 ├── client/                  # React + Vite frontend
 │   ├── src/
-│   │   ├── components/      # StoryCard, ShortsFeed, LoadingScreen, SourceModal
-│   │   ├── pages/           # Home.jsx, Feed.jsx
+│   │   ├── components/      # StoryCard.jsx, ShortsFeed.jsx, LoadingScreen.jsx, SourceModal.jsx
+│   │   │                    # ShortsFeed.css, LoadingScreen.css
+│   │   ├── pages/           # Home.jsx, Home.css, Feed.jsx, Saved.jsx
 │   │   ├── App.jsx
+│   │   ├── main.jsx
 │   │   └── index.css
 │   └── package.json
 │
 └── server/                  # Express backend
+    ├── app.js               # Express app setup (middleware, routes, error handler)
+    ├── server.js            # HTTP server entry point
     ├── services/
-    │   ├── ai/              # aiService.js  — LLM summarisation
+    │   ├── ai/              # aiService.js  — LLM text summarisation
     │   ├── image/           # imageService.js — AI image generation
-    │   └── news/            # Google News, Reddit, Hacker News, normaliser, clusterer
+    │   └── news/            # googleNewsService.js, redditService.js, hackerNewsService.js
+    │                        # newsNormalizer.js, clusterService.js
     ├── controllers/         # newsController.js, storyController.js
-    ├── models/              # Story, Source, SearchHistory (Mongoose)
-    ├── routes/              # /api/news, /api/stories, /api/search/history
-    ├── config/              # MongoDB connection
+    ├── models/              # Story.js, Source.js, SearchHistory.js (Mongoose)
+    ├── routes/              # newsRoutes.js, storyRoutes.js, searchHistoryRoutes.js
+    ├── config/              # db.js — MongoDB connection
     └── .env
 ```
 
@@ -93,9 +98,15 @@ LLM_PROVIDER=openai
 # If blank, LLM_API_KEY is used automatically (DALL-E for OpenAI, Imagen for Gemini)
 # Set this only if you want a separate dedicated key for images
 # IMAGE_API_KEY=
+
+# --- Google Custom Search (optional) ---
+# Enables high-quality real-image search via Google CSE (highest priority).
+# If not set, the app falls back to Bing Image Search scraping (no key needed).
+# GOOGLE_API_KEY=
+# GOOGLE_CX=
 ```
 
-> **Note:** With OpenAI, the same key is used for both GPT-4o-mini (text) and DALL-E 3 (images). No extra config needed.
+> **Note:** Images are sourced from real web searches (Bing/Google) by default. AI image generation (DALL-E / Imagen) is only used if the image search fails. With OpenAI, the same `LLM_API_KEY` is used for both GPT-4o-mini (text) and DALL-E 3 (images) — no extra config needed.
 
 ---
 
@@ -108,12 +119,12 @@ Open **two terminals**:
 cd server
 npm run dev
 
-# Terminal 2 — Frontend (http://localhost:5174)
+# Terminal 2 — Frontend (http://localhost:5173)
 cd client
 npm run dev
 ```
 
-Then open **http://localhost:5174** in your browser.
+Then open **http://localhost:5173** in your browser.
 
 ---
 
@@ -153,7 +164,7 @@ Trigger a full pipeline run: fetch → cluster → summarise → generate image 
 Return trending headlines fetched from Google News RSS (no keywords required).
 
 ### `GET /api/news/live-india`
-Return live India news stories with images, each pre-populated with a Bing-scraped image.
+Return live India news stories, each with an image sourced via Bing Image Search scraping.
 
 ### `GET /api/stories`
 Return all saved stories (latest first).
@@ -196,10 +207,11 @@ Health check — returns `{ "success": true, "data": { "status": "ok" } }`.
 | Layer | Technology |
 |-------|-----------|
 | Frontend | React 19, Vite 8, Framer Motion, Tailwind CSS 4 |
+| Routing | React Router DOM 7 |
 | Icons | Lucide React |
 | Backend | Express 5, Node.js |
 | Database | MongoDB Atlas via Mongoose 9 |
-| News sources | Google News RSS, Reddit JSON API, Hacker News API |
+| News sources | Google News RSS, Reddit JSON API, Hacker News Algolia API |
 | LLM (text) | OpenAI GPT-4o-mini / Google Gemini 1.5 Flash |
 | LLM (images) | OpenAI DALL-E 3 / Google Gemini Imagen 3 |
 
