@@ -1,0 +1,141 @@
+/* ============================================================
+   LOADING SCREEN — Editorial "Composing…" style
+   ============================================================ */
+
+.loading-root {
+  position: fixed;
+  inset: 0;
+  background: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  overflow: hidden;
+}
+
+/* ─── Animated background columns ───────────────────────── */
+.loading-columns {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  pointer-events: none;
+  opacity: 0.04;
+}
+
+.loading-col {
+  flex: 1;
+  border-right: 1px solid var(--paper);
+  height: 100%;
+}
+
+/* ─── Masthead mark ──────────────────────────────────────── */
+.loading-mark {
+  font-family: var(--font-serif);
+  font-size: 5rem;
+  font-weight: 900;
+  font-style: italic;
+  color: var(--paper);
+  letter-spacing: -3px;
+  line-height: 1;
+  margin-bottom: 2.5rem;
+  position: relative;
+}
+
+.loading-mark::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: var(--amber);
+}
+
+/* ─── Stage display ──────────────────────────────────────── */
+.loading-stage {
+  text-align: center;
+  margin-bottom: 2.5rem;
+}
+
+.stage-icon {
+  color: var(--amber);
+  margin-bottom: 0.75rem;
+  display: flex;
+  justify-content: center;
+}
+
+.stage-text {
+  font-family: var(--font-serif);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--paper);
+  letter-spacing: -0.5px;
+}
+
+.stage-sub {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 6px;
+}
+
+/* ─── Typewriter cursor ──────────────────────────────────── */
+.cursor-blink {
+  display: inline-block;
+  width: 3px;
+  height: 1.2em;
+  background: var(--amber);
+  margin-left: 2px;
+  vertical-align: text-bottom;
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0; }
+}
+
+/* ─── Progress track ─────────────────────────────────────── */
+.loading-progress-track {
+  width: 300px;
+  height: 3px;
+  background: rgba(245,240,232,0.1);
+  border-radius: 0;
+  overflow: hidden;
+  position: relative;
+}
+
+.loading-progress-fill {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  background: var(--amber);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ─── Stage dots ─────────────────────────────────────────── */
+.stage-dots {
+  display: flex;
+  gap: 8px;
+  margin-top: 1.5rem;
+}
+
+.stage-dot {
+  width: 8px;
+  height: 8px;
+  border: 1.5px solid rgba(245,240,232,0.3);
+  border-radius: 50%;
+  transition: background 0.3s ease, border-color 0.3s ease;
+}
+
+.stage-dot.active {
+  background: var(--amber);
+  border-color: var(--amber);
+}
+
+.stage-dot.done {
+  background: rgba(245,240,232,0.4);
+  border-color: rgba(245,240,232,0.4);
+}

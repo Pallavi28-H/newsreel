@@ -1,0 +1,148 @@
+/* ============================================================
+   NEWSREEL V2 — Editorial Warm Theme
+   Design language: Bold editorial print · Warm amber palette
+   ============================================================ */
+
+@import "tailwindcss";
+
+/* ─── Design tokens ─────────────────────────────────────── */
+:root {
+  /* Warm editorial palette */
+  --ink:        #1a1208;          /* deep ink black */
+  --paper:      #f5f0e8;          /* warm off-white, newsprint */
+  --paper-dark: #ede7d9;
+  --amber:      #d97706;          /* rich amber accent */
+  --amber-light:#fbbf24;
+  --rust:       #b45309;
+  --cream:      #fef9ee;
+  --charcoal:   #292115;
+  --slate:      #5c503f;
+  --muted:      #9c8e79;
+  --red-flag:   #dc2626;          /* breaking news red */
+
+  /* Typography */
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-sans:  'Inter', system-ui, sans-serif;
+  --font-mono:  'JetBrains Mono', monospace;
+
+  /* Spacing / radius */
+  --radius-sm:  4px;
+  --radius-md:  8px;
+  --radius-lg:  16px;
+
+  /* Borders */
+  --border:     1px solid rgba(26,18,8,0.15);
+  --border-bold: 2px solid var(--ink);
+  --border-amber: 2px solid var(--amber);
+}
+
+/* ─── Reset / base ──────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--paper);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+a {
+  color: var(--amber);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+a:hover { color: var(--rust); }
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* ─── Dot-grid texture (editorial motif) ────────────────── */
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(26,18,8,0.12) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* ─── Newspaper-style divider ───────────────────────────── */
+.press-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 1.5rem 0;
+}
+.press-divider::before,
+.press-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
+  opacity: 0.2;
+}
+
+/* ─── Scroll snap container ─────────────────────────────── */
+.shorts-container {
+  height: 100vh;
+  width: 100vw;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.shorts-container::-webkit-scrollbar { display: none; }
+
+/* ─── Utility: serif heading ────────────────────────────── */
+.serif { font-family: var(--font-serif); }
+
+/* ─── Breaking-news ticker animation ────────────────────── */
+@keyframes ticker-slide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ─── Shimmer loading skeleton ──────────────────────────── */
+@keyframes shimmer {
+  0%   { background-position: -400px 0; }
+  100% { background-position: 400px 0; }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    var(--paper-dark) 25%,
+    var(--paper) 50%,
+    var(--paper-dark) 75%
+  );
+  background-size: 800px 100%;
+  animation: shimmer 1.6s infinite linear;
+  border-radius: var(--radius-sm);
+}
+
+/* ─── Flip-card entrance keyframe ───────────────────────── */
+@keyframes flip-in {
+  from { transform: rotateX(-8deg) scale(0.97); opacity: 0; }
+  to   { transform: rotateX(0deg)  scale(1);    opacity: 1; }
+}
+
+/* ─── Swipe hint ────────────────────────────────────────── */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(8px); }
+}
+
+/* ─── Press badge pulse ─────────────────────────────────── */
+@keyframes press-pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.7; transform: scale(1.06); }
+}

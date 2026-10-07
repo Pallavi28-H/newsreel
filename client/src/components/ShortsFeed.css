@@ -1,0 +1,128 @@
+/* ============================================================
+   SHORTS FEED — Editorial layout wrapper
+   ============================================================ */
+
+.feed-wrapper {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  background: var(--charcoal);
+}
+
+/* Side rule decorations on desktop */
+.feed-wrapper::before,
+.feed-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background: rgba(245,240,232,0.07);
+  pointer-events: none;
+  z-index: 5;
+}
+.feed-wrapper::before { left: max(0px, calc(50% - 220px)); }
+.feed-wrapper::after  { right: max(0px, calc(50% - 220px)); }
+
+/* Progress bar — right edge indicator */
+.feed-progress {
+  position: absolute;
+  top: 0;
+  right: 16px;
+  width: 3px;
+  height: 100%;
+  background: rgba(245,240,232,0.06);
+  z-index: 20;
+}
+
+.feed-progress-fill {
+  width: 100%;
+  background: var(--amber);
+  border-radius: 0 0 3px 3px;
+  transition: height 0.4s cubic-bezier(0.4,0,0.2,1);
+}
+
+/* Story counter badge */
+.feed-counter {
+  position: absolute;
+  bottom: 24px;
+  right: 28px;
+  z-index: 20;
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  letter-spacing: 0.15em;
+  color: rgba(245,240,232,0.4);
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  transform: rotate(180deg);
+  user-select: none;
+}
+
+/* Swipe hint */
+.swipe-hint {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  animation: bob 2s ease-in-out infinite;
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.swipe-hint-line {
+  width: 1px;
+  height: 24px;
+  background: var(--paper);
+}
+
+.swipe-hint-text {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--paper);
+  white-space: nowrap;
+}
+
+/* Snap container */
+.snap-container {
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.snap-container::-webkit-scrollbar { display: none; }
+
+.snap-point {
+  height: 100vh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+@media (min-width: 640px) {
+  .snap-point { padding: 1.5rem 0; }
+  .story-card { border-radius: 4px; }
+}
+
+@media (max-width: 639px) {
+  .story-card {
+    max-width: 100% !important;
+    border-radius: 0;
+    box-shadow: none !important;
+  }
+}
